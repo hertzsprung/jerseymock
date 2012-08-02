@@ -1,0 +1,1 @@
+This project is the companion to the blog post, [Mocking REST resources with JMock and Jersey](http://datumedge.blogspot.com/2012/08/mocking-rest-resources-with-jmock-and.html).  To run the project, use `mvn clean verify`.
