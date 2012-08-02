@@ -31,7 +31,10 @@ public class BlogAggregatorUnitTest {
 			allowing(bobsBlogResource).get(); will(returnValue(bobsBlog));
 		}});
 		
-		Feed feed = new BlogAggregator(ImmutableList.of(alicesBlogResource, bobsBlogResource)).aggregate();
+		BlogAggregator aggregator = new BlogAggregator(ImmutableList.of(
+				alicesBlogResource,
+				bobsBlogResource));
+		Feed feed = aggregator.aggregate();
 		assertThat(feed, containsInAnyOrder(alicesMostRecentArticle, bobsMostRecentArticle));
 	}
 

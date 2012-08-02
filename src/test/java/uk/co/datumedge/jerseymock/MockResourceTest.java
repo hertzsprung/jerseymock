@@ -12,10 +12,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import uk.co.datumedge.jerseymock.MyResource;
-
 import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.spi.container.grizzly2.GrizzlyTestContainerFactory;
 
 public class MockResourceTest {
 	@Rule public JUnitRuleMockery context = new JUnitRuleMockery() {{
@@ -23,7 +20,6 @@ public class MockResourceTest {
 	}};
 	private final MyResource fakeResource = context.mock(MyResource.class);
 	private final JerseyTest jerseyTest = aJerseyTest()
-			.withTestContainerFactory(new GrizzlyTestContainerFactory())
 			.addResource(fakeResource)
 			.build();
 

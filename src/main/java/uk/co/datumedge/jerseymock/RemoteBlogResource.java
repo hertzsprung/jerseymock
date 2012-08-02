@@ -1,5 +1,7 @@
 package uk.co.datumedge.jerseymock;
 
+import java.util.Arrays;
+
 import com.sun.jersey.api.client.WebResource;
 
 public class RemoteBlogResource implements BlogResource {
@@ -11,6 +13,6 @@ public class RemoteBlogResource implements BlogResource {
 
 	@Override
 	public Blog get() {
-		return resource.get(Blog.class);
+		return new Blog(Arrays.asList(resource.get(Article[].class)));
 	}
 }

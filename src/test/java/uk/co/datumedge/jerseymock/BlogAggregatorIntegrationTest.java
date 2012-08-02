@@ -1,7 +1,7 @@
 package uk.co.datumedge.jerseymock;
 
-import static com.sun.jersey.api.json.JSONConfiguration.FEATURE_POJO_MAPPING;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
 import static uk.co.datumedge.jerseymock.JerseyTestBuilder.aJerseyTest;
 
@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.spi.container.grizzly2.GrizzlyTestContainerFactory;
 
 public class BlogAggregatorIntegrationTest {
 	private final Article alicesMostRecentArticle = new Article(date(2012, 8, 1), "Alice's most recent article");
@@ -35,15 +34,11 @@ public class BlogAggregatorIntegrationTest {
 	private final BlogResource bobsBlogResource = context.mock(BlogResource.class, "Bob's Blog");
 	
 	private final JerseyTest alicesServer = aJerseyTest()
-			.withTestContainerFactory(new GrizzlyTestContainerFactory())
-			.enable(FEATURE_POJO_MAPPING)
 			.addResource(alicesBlogResource)
 			.build();
 	
 	private final JerseyTest bobsServer = aJerseyTest()
-			.withTestContainerFactory(new GrizzlyTestContainerFactory())
-			.withPort(9999) // TODO: use 0
-			.enable(FEATURE_POJO_MAPPING)
+			.withPort(9999)
 			.addResource(bobsBlogResource)
 			.build();
 
@@ -70,7 +65,9 @@ public class BlogAggregatorIntegrationTest {
 				clientFor(bobsServer)));
 		
 		Feed feed = aggregator.aggregate();
-		assertThat(feed, containsInAnyOrder(alicesMostRecentArticle, bobsMostRecentArticle));
+		assertThat(feed, containsInAnyOrder(
+				samePropertyValuesAs(alicesMostRecentArticle),
+				samePropertyValuesAs(bobsMostRecentArticle)));
 	}
 
 	private BlogResource clientFor(JerseyTest server) {
